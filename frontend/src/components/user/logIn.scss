@@ -1,0 +1,67 @@
+.LogIn {
+  $baseColor: #dedede;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 300px;
+  background-color: $baseColor;
+  padding: 15px;
+  border-radius: 5px;
+
+  input {
+    font-size: 20px;
+    background-color: $baseColor;
+    border: none;
+    border-bottom: 1px solid black;
+    margin: 15px 0;
+    color: black;
+    outline: none;
+  }
+
+  .error {
+    background-color: #ff5959;
+    border-radius: 10px;
+    margin: 15px 0;
+    padding: 10px;
+  }
+
+  button {
+    $firstColor: lightblue;
+    $secondaryColor: black;
+
+    $height: 35px;
+
+    margin: 15px;
+    font-size: 25px;
+    width: 120px;
+    height: $height;
+    border-radius: $height / 2;
+    border: none;
+    outline: none;
+
+    background-color: $firstColor;
+    color: $secondaryColor;
+
+    &:hover {
+      background-color: $secondaryColor;
+        color: $firstColor;
+    }
+  }
+
+  label {
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    color: white;
+    margin: 10px 0;
+  }
+
+  img {
+    $maxSize: 100px;
+    max-width: $maxSize;
+    max-height: $maxSize;
+    margin-bottom: 50px;
+  }
+}
