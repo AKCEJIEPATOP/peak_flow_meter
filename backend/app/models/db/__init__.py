@@ -15,15 +15,22 @@ class User(Base):
     username = Column(String, unique=True)
     password_hash = Column(String)
     token = Column(String, nullable=True)
+    normal_threshold = Column(Integer)
+    warning_threshold = Column(Integer)
 
-    measurements: List['Measurement'] = relationship('Measurement', back_populates='user', cascade='all, delete')
+    measurements: List['Measurement'] = relationship(
+        'Measurement',
+        back_populates='user',
+        cascade='all, delete'
+    )
 
 
 class Measurement(Base):
     __tablename__ = 'measurements'
 
     id = Column(Integer, primary_key=True)
-    description = Column(String)
+    time = Column(Integer)
+    value = Column(Integer)
 
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship('User', back_populates='measurements')

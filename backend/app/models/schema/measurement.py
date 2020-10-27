@@ -3,7 +3,8 @@ from pydantic import BaseModel
 
 class Measurement(BaseModel):
     id: int
-    description: str
+    time: int
+    value: int
 
     class Config:
         orm_mode = True

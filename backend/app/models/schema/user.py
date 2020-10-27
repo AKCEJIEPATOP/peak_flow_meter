@@ -13,7 +13,14 @@ class User(BaseModel):
         orm_mode = True
 
 
+class UserRegistration(BaseModel):
+    username: str
+    password: str
+
+
 class UserUnfold(User):
+    normal_threshold: int
+    warning_threshold: int
     measurements: List[Measurement]
 
 
