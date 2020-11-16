@@ -66,6 +66,16 @@ async def get_self_info(user: UserSchema = authenticated_user):
     with session_scope() as session:
         user = session.query(User).options(joinedload(User.measurements)).get(user.id)
         session.expunge(user)
+        measurement_sum = 0
+        user.sl_mean = []
+        for i, measurement in enumerate(user.measurements):
+            measurement_sum += measurement.value
+            user.sl_mean += [int(measurement_sum / (i + 1))]
+        user.extra = None
+        if len(user.measurements) > 4:
+            user.extra = [user.measurements[-3:]]
+            # for measurement in user.measurements[-3:]:
+            # user.extra += [measurement]
         return user
 
 

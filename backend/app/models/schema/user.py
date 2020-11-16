@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -22,6 +22,8 @@ class UserUnfold(User):
     normal_threshold: int
     warning_threshold: int
     measurements: List[Measurement]
+    sl_mean: Optional[List[int]]
+    extra: Optional[List[int]]
 
 
 class UserList(BaseModel):
