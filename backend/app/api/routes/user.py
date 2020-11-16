@@ -73,9 +73,9 @@ async def get_self_info(user: UserSchema = authenticated_user):
             user.sl_mean += [int(measurement_sum / (i + 1))]
         user.extra = None
         if len(user.measurements) > 4:
-            user.extra = [user.measurements[-3:]]
-            # for measurement in user.measurements[-3:]:
-            # user.extra += [measurement]
+            user.extra = []
+            for measurement in user.measurements[-3:]:
+                user.extra += [measurement.value]
         return user
 
 
