@@ -6,6 +6,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import joinedload
 from passlib.hash import pbkdf2_sha256
 
+from app.exstrapolate import spline_extrapolation
 from app.models.db import session_scope, User, Measurement
 from app.models.schema.user import UserList, AuthResponse, User as UserSchema, UserUnfold, \
     UserRegistration
@@ -73,9 +74,10 @@ async def get_self_info(user: UserSchema = authenticated_user):
             user.sl_mean += [int(measurement_sum / (i + 1))]
         user.extra = None
         if len(user.measurements) > 4:
-            user.extra = []
-            for measurement in user.measurements[-3:]:
-                user.extra += [measurement.value]
+            base = user.measurements[0].time
+            x = [i.time for i in user.measurements[-5:]]
+            y = [i.value for i in user.measurements[-5:]]
+            user.extra = spline_extrapolation(x, y, base)
         return user
 
 

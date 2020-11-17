@@ -23,7 +23,7 @@ class UserUnfold(User):
     warning_threshold: int
     measurements: List[Measurement]
     sl_mean: Optional[List[int]]
-    extra: Optional[List[int]]
+    extra: Optional[List[dict]]
 
 
 class UserList(BaseModel):
