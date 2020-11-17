@@ -77,7 +77,7 @@ async def get_self_info(user: UserSchema = authenticated_user):
             base = user.measurements[0].time
             x = [i.time for i in user.measurements[-5:]]
             y = [i.value for i in user.measurements[-5:]]
-            user.extra = spline_extrapolation(x, y, base)
+            user.extra = spline_extrapolation(x, y)
         return user
 
 
