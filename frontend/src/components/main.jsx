@@ -35,7 +35,7 @@ export const Main = (props) => {
   };
 
   useEffect(() => {
-    const { normal_threshold, warning_threshold, measurements } = profile;
+    const { normal_threshold, warning_threshold, measurements, sl_mean, extra } = profile;
 
     const data = {
       thresholds: {
@@ -44,6 +44,11 @@ export const Main = (props) => {
       },
       x: [],
       y: [],
+      average: sl_mean,
+      extra: {
+        x: [measurements[measurements.length - 1].time, ...extra.map((i) => i.x)],
+        y: [measurements[measurements.length - 1].value, ...extra.map((i) => i.y)],
+      },
     };
     measurements.forEach((measurement) => {
       data.x.push(measurement.time);
@@ -56,7 +61,7 @@ export const Main = (props) => {
       const { width, height } = context.canvas;
 
       const minX = Math.min(...data.x);
-      const maxX = Math.max(...data.x);
+      const maxX = Math.max(...[...data.x, ...data.extra.x]);
 
       const maxY = Math.max(...data.y);
 
@@ -91,6 +96,8 @@ export const Main = (props) => {
       const drawAxes = () => {
         const division = gridScale;
 
+        context.lineWidth = 1;
+        context.strokeStyle = 'black';
         let axis = division;
         while (axis < maxBorderY) {
           context.beginPath();
@@ -108,24 +115,35 @@ export const Main = (props) => {
       };
       drawAxes();
 
-      const drawPoints = () => {
-        for (let i = 0; i < data.x.length; i++) {
+      const drawArray = (xv, yv, color) => {
+        if (xv.length !== yv.length) {
+          throw Error('Data length error');
+        }
 
+
+        context.lineWidth = 3;
+        context.strokeStyle = color;
+        for (let i = 1; i < xv.length; i++) {
           context.beginPath();
-          context.arc(x(data.x[i]), y(data.y[i]), 5, 0, 2 * Math.PI);
-          context.fillStyle = 'black';
+          context.moveTo(x(xv[i - 1]), y(yv[i - 1]));
+          context.lineTo(x(xv[i]), y(yv[i]));
+          context.stroke();
+        }
+
+        context.fillStyle = color;
+        for (let i = 0; i < xv.length; i++) {
+          context.beginPath();
+          context.arc(x(xv[i]), y(yv[i]), 5, 0, 2 * Math.PI);
           context.fill();
           context.stroke();
-
-          if (i !== 0) {
-            context.beginPath();
-            context.moveTo(x(data.x[i - 1]), y(data.y[i - 1]));
-            context.lineTo(x(data.x[i]), y(data.y[i]));
-            context.stroke();
-          }
         }
+
       };
-      drawPoints();
+
+      drawArray(data.x, data.y, 'black');
+      drawArray(data.x, data.average, 'purple');
+      console.log(data.extra);
+      drawArray(data.extra.x, data.extra.y, 'red');
     };
     drawGraph(data);
   }, [canvas, profile]);
