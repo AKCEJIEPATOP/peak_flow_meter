@@ -12,7 +12,6 @@ def extrapolation(x, y):
     weights[-2] = 2
     weights[-1] = 4
     lr = LinearRegression()
-    print(weights)
     lr.fit(x, y, weights)
     new_y = lr.predict(new_x)
 
