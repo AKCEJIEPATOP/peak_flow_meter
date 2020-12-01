@@ -36,7 +36,7 @@ class Measurement(Base):
     user = relationship('User', back_populates='measurements')
 
 
-engine = create_engine('sqlite:///db.db', echo=True)
+engine = create_engine('sqlite:///db.db', echo=False)
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
