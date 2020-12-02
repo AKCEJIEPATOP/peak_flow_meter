@@ -24,6 +24,7 @@ class UserUnfold(User):
     measurements: List[Measurement]
     sl_mean: Optional[List[int]]
     extra: Optional[List[dict]]
+    daily_stats: dict
 
 
 class UserList(BaseModel):
